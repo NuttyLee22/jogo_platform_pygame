@@ -1,6 +1,6 @@
 # Adventure Platformer - PgZero
 
-Um jogo de plataforma completo desenvolvido em Python usando Pygame Zero.
+Um jogo de plataforma completo desenvolvido em Python usando a biblioteca Pygame Zero.
 
 ## 📋 Requisitos
 
@@ -10,7 +10,7 @@ Um jogo de plataforma completo desenvolvido em Python usando Pygame Zero.
 ## 🚀 Como Executar
 
 ```bash
-cd python_game
+cd jogo_roguelike_pygame
 pgzrun main.py
 ```
 
@@ -21,8 +21,8 @@ python -m pgzrun main.py
 
 ## 🎮 Controles
 
-- **WASD** ou **Setas**: Mover o personagem
-- **Espaço**: Pular
+- **Setas laterais**: Mover o personagem
+- **Seta pra cima**: Pular
 - **ESC**: Voltar ao menu
 
 ## 🎯 Objetivo
@@ -63,36 +63,3 @@ O jogo usa animações procedurais para os personagens:
 - **Inimigos**: Animação de pernas durante a patrulha
 - Os olhos acompanham a direção do movimento
 
-## 📝 Notas Técnicas
-
-- Usa apenas: `pgzero`, `math`, `random`, `Rect` do Pygame
-- Segue convenções PEP8
-- Classes bem estruturadas e documentadas
-- Código totalmente original
-
-## 🎵 Adicionando Sons (Opcional)
-
-Para adicionar sons ao jogo:
-
-1. Crie as pastas `sounds/` e `music/`
-2. Adicione arquivos:
-   - `sounds/jump.wav` - Som de pulo
-   - `sounds/hurt.wav` - Som de dano
-   - `music/background.mp3` - Música de fundo
-
-O jogo funciona sem esses arquivos, mas fica mais imersivo com eles!
-
-## 🔧 Personalizações
-
-Você pode ajustar as constantes no início do arquivo `main.py`:
-
-```python
-GRAVITY = 0.8          # Força da gravidade
-JUMP_STRENGTH = -15    # Força do pulo
-PLAYER_SPEED = 5       # Velocidade do jogador
-ENEMY_SPEED = 2        # Velocidade dos inimigos
-```
-
----
-
-Desenvolvido como projeto educacional de Pygame Zero.

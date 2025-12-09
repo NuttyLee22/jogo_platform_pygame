@@ -29,10 +29,10 @@ PLAYER_SPEED = 5
 ENEMY_SPEED = 2
 GROUND_Y = 550
 ANIMATION_SPEED = 0.15
-SPRITE_SCALE = 0.35  # Escala dos sprites (35% do tamanho original - menores e mais responsivos)
-ATTACK_RANGE = 80  # Alcance do ataque (aumentado para ser mais fácil acertar)
-ATTACK_DURATION = 0.3  # Duração da animação de ataque
-COLLECTIBLES_NEEDED = 3  # Quantos coletáveis são necessários para abrir a saída
+SPRITE_SCALE = 0.35
+ATTACK_RANGE = 80
+ATTACK_DURATION = 0.3
+COLLECTIBLES_NEEDED = 3
 
 
 class GameState:
@@ -85,14 +85,13 @@ class Player(AnimatedSprite):
         self.is_moving = False
         self.is_attacking = False
         self.attack_timer = 0
-        self.attack_hit_this_frame = False  # Evitar múltiplos hits no mesmo ataque
-        self.attack_sound_played = False  # Flag para tocar som apenas uma vez
-        self.show_impact = False  # Flag para mostrar sprite de impacto
-        self.impact_timer = 0  # Timer para o sprite de impacto
-        self.impact_x = 0  # Posição X do impacto
-        self.impact_y = 0  # Posição Y do impacto
+        self.attack_hit_this_frame = False 
+        self.attack_sound_played = False
+        self.show_impact = False
+        self.impact_timer = 0
+        self.impact_x = 0 
+        self.impact_y = 0
         self.collectibles_collected = 0
-        # Sprites disponíveis
         self.images_idle = ["hero_paused"]
         self.images_walk = ["hero_walk_01", "hero_walk_02"]
         self.images_attack = ["hero_attack_02"]
@@ -154,16 +153,15 @@ class Player(AnimatedSprite):
                     self.on_ground = True
                     break  # Sair após encontrar primeira colisão
         
-        # Chao - não permitir passar abaixo (ajustar para pés no chão) - VERIFICAR DEPOIS DAS PLATAFORMAS
-        ground_surface = GROUND_Y  # A superfície do chão
+        # Chao
+        ground_surface = GROUND_Y
         sprite_height = 60 * SPRITE_SCALE
-        feet_position = self.y + sprite_height // 2  # Posição dos pés do personagem
+        feet_position = self.y + sprite_height // 2 
         
         # Verificar se os pés estão no chão ou abaixo dele
         if feet_position > ground_surface:
             # Garantir que o personagem não passe através do chão
             self.y = ground_surface - sprite_height // 2
-            # Se estava caindo, parar a queda imediatamente
             if self.velocity_y > 0:
                 self.velocity_y = 0
             self.on_ground = True
@@ -184,7 +182,7 @@ class Player(AnimatedSprite):
             self.attack_timer -= dt
             if self.attack_timer <= 0:
                 self.is_attacking = False
-                self.attack_hit_this_frame = False  # Resetar ao terminar ataque
+                self.attack_hit_this_frame = False
             else:
                 # Usar sempre frame 0 (só temos hero_attack_02)
                 self.attack_frame = 0
@@ -198,7 +196,7 @@ class Player(AnimatedSprite):
         # Atualizar sprite de impacto
         if self.show_impact:
             self.impact_timer += dt
-            if self.impact_timer >= 0.15:  # Mostrar por 0.15 segundos
+            if self.impact_timer >= 0.15:
                 self.show_impact = False
                 self.impact_timer = 0
         
@@ -224,15 +222,15 @@ class Player(AnimatedSprite):
             self.is_attacking = True
             self.attack_timer = ATTACK_DURATION
             self.attack_frame = 0
-            self.attack_hit_this_frame = False  # Resetar flag de hit
-            self.attack_sound_played = False  # Flag para tocar som apenas uma vez
+            self.attack_hit_this_frame = False
+            self.attack_sound_played = False
     
     def get_attack_rect(self):
         """Retorna o retângulo de área de ataque."""
         base_size = 40 * SPRITE_SCALE
-        attack_width = ATTACK_RANGE  # Range maior agora (80 pixels)
-        attack_height = base_size * 1.5  # Altura maior para facilitar acertar
-        offset_x = base_size // 2 + 10  # Começar um pouco mais longe
+        attack_width = ATTACK_RANGE 
+        attack_height = base_size * 1.5
+        offset_x = base_size // 2 + 10
         if self.facing_right:
             return Rect(self.x + offset_x, self.y - base_size // 2 - 10, attack_width, attack_height)
         else:
@@ -320,9 +318,9 @@ class Boss(AnimatedSprite):
         distance_to_player = abs(self.x - player.x)
         
         # Sempre perseguir o jogador se estiver longe
-        if distance_to_player > 40:  # Se estiver longe, perseguir
+        if distance_to_player > 40:
             if self.x < player.x:
-                self.velocity_x = 1.5  # Velocidade fixa
+                self.velocity_x = 1.5
                 self.facing_right = True
             else:
                 self.velocity_x = -1.5
@@ -349,7 +347,7 @@ class Boss(AnimatedSprite):
             self.attack_cooldown = 2.0  # 2 segundos entre ataques
             # Causar dano ao jogador
             if player.take_damage():
-                pass  # Som já é tocado na função take_damage
+                pass
         
         if self.attack_cooldown > 0:
             self.attack_cooldown -= dt
@@ -594,8 +592,8 @@ class Game:
         self.player = Player(100, GROUND_Y)
         self.player.collectibles_collected = 0
         self.enemies = []
-        self.platforms = []  # Sem plataformas - estilo Castlevania
-        self.collectibles = []  # Sem coletáveis
+        self.platforms = [] 
+        self.collectibles = []
         self.boss = None
         self.exit_locked = True
         self.current_wave = 0
@@ -604,7 +602,7 @@ class Game:
         
     def create_level(self):
         """Cria o nível estilo Castlevania - corredor horizontal sem plataformas."""
-        # Sem plataformas - estilo Castlevania
+        # Sem plataformas
         self.platforms = []
         self.collectibles = []
         
@@ -630,8 +628,8 @@ class Game:
             # Spawnar primeiro inimigo se não houver nenhum
             if len(self.enemies) == 0 and self.current_wave == 0:
                 sprite_height = 60 * SPRITE_SCALE
-                spawn_x = 600  # Spawnar à direita
-                spawn_y = GROUND_Y  # No chão
+                spawn_x = 600
+                spawn_y = GROUND_Y
                 patrol_left = spawn_x - 150
                 patrol_right = min(WIDTH - 100, spawn_x + 150)
                 self.enemies.append(Enemy(spawn_x, spawn_y, patrol_left, patrol_right))
@@ -645,7 +643,7 @@ class Game:
                 if self.enemy_spawn_timer >= self.enemy_spawn_delay:
                     # Spawnar próximo inimigo
                     sprite_height = 60 * SPRITE_SCALE
-                    spawn_x = 600 + (self.current_wave * 50)  # Spawnar mais à direita
+                    spawn_x = 600 + (self.current_wave * 50)
                     spawn_y = GROUND_Y  # No chão
                     patrol_left = spawn_x - 150
                     patrol_right = min(WIDTH - 100, spawn_x + 150)
@@ -706,8 +704,8 @@ class Game:
                 self.state = GameState.GAME_OVER
             
             # Verificar entrada na porta do boss (não trancada)
-            exit_x = WIDTH - 50  # Centro da porta
-            exit_y = GROUND_Y - 50  # Posição da porta (no chão)
+            exit_x = WIDTH - 50
+            exit_y = GROUND_Y - 50
             if not self.exit_locked and abs(self.player.x - exit_x) < 50 and abs(self.player.y - exit_y) < 60:
                 # Entrar na boss room
                 self.enter_boss_room()
@@ -732,7 +730,7 @@ class Game:
                     # Efeito visual de hit no boss
                     self.boss.hit_effect = True
                     self.boss.hit_effect_timer = 0
-                    self.player.attack_hit_this_frame = True  # Marcar que já acertou neste ataque
+                    self.player.attack_hit_this_frame = True
                     # Mostrar sprite de impacto na posição do hit
                     self.player.show_impact = True
                     self.player.impact_timer = 0
@@ -782,7 +780,7 @@ class Game:
                 music_path = os.path.join("music", "boss_theme.wav")
                 if os.path.exists(music_path):
                     pygame.mixer.music.load(music_path)
-                    pygame.mixer.music.play(-1)  # -1 para loop infinito
+                    pygame.mixer.music.play(-1)
                     pygame.mixer.music.set_volume(0.35)
                     self.music_playing = True
                     print(f"Música do boss carregada com sucesso: {music_path}")
@@ -803,8 +801,8 @@ class Game:
         # Posicionar boss no centro, pés no chão (GROUND_Y é onde os pés devem estar)
         self.boss = Boss(WIDTH // 2, GROUND_Y)
         # Resetar velocidade do boss para evitar pulo inicial
-        self.boss.velocity_x = 1.5  # Inicializar com velocidade normal
-        self.boss.facing_right = False  # Começar virado para o jogador
+        self.boss.velocity_x = 1.5
+        self.boss.facing_right = False
         # Resetar posição do jogador - lado esquerdo
         self.player.x = sprite_width // 2 + 80
         self.player.y = GROUND_Y
@@ -813,12 +811,12 @@ class Game:
         self.player.velocity_y = 0
         # Plataformas melhoradas para a boss room - mais baixas
         self.platforms = [
-            Platform(0, GROUND_Y, WIDTH, 20),  # Chão principal
-            Platform(100, GROUND_Y - 120, 180, 20),  # Plataforma esquerda (mais baixa)
-            Platform(520, GROUND_Y - 120, 180, 20),  # Plataforma direita (mais baixa)
-            Platform(200, GROUND_Y - 220, 140, 20),  # Plataforma superior esquerda
-            Platform(460, GROUND_Y - 220, 140, 20),  # Plataforma superior direita
-            Platform(310, GROUND_Y - 320, 180, 20),  # Plataforma central superior
+            Platform(0, GROUND_Y, WIDTH, 20),
+            Platform(100, GROUND_Y - 120, 180, 20),
+            Platform(520, GROUND_Y - 120, 180, 20),
+            Platform(200, GROUND_Y - 220, 140, 20),
+            Platform(460, GROUND_Y - 220, 140, 20),
+            Platform(310, GROUND_Y - 320, 180, 20),
         ]
     
     def handle_click(self, pos):
@@ -858,7 +856,7 @@ class Game:
         if self.sound_enabled and not self.music_playing:
             try:
                 music.play("bg_music")
-                music.set_volume(0.35)  # Volume reduzido em 30% (de 0.5 para 0.35)
+                music.set_volume(0.35)
                 self.music_playing = True
             except Exception as e:
                 print(f"Erro ao tocar música: {e}")
@@ -1033,8 +1031,7 @@ class Game:
             screen.draw.filled_circle((WIDTH - 50, goal_y), 15, (150, 150, 150))
             screen.draw.filled_rect(Rect(WIDTH - 60, goal_y - 15, 20, 15), (100, 100, 100))
         else:
-            # Portal desbloqueado (verde brilhante com efeito)
-            # Gradiente verde
+            # Portal desbloqueado
             for i in range(goal_rect.height):
                 ratio = i / goal_rect.height
                 r = int(50 + (100 - 50) * ratio)
@@ -1053,8 +1050,6 @@ class Game:
             screen.draw.circle((WIDTH - 50, goal_y), 15, (150, 255, 200))
             # Texto "PORTAL"
             screen.draw.text("PORTAL", center=(WIDTH - 50, goal_y + 35), fontsize=16, color=(255, 255, 200), shadow=(1, 1), scolor="black")
-        
-        # Estilo Castlevania - sem plataformas, apenas chão
         
         # Desenhar inimigos vivos
         for enemy in self.enemies:
@@ -1155,7 +1150,7 @@ class Game:
             # Determinar qual sprite usar com direção
             direction = 'r' if self.player.facing_right else 'l'
             if self.player.is_attacking:
-                # Usar sempre hero_attack_02 (frame 0)
+                # Usar sempre hero_attack_02
                 sprite_key = f'attack_0_{direction}'
             elif self.player.is_moving:
                 sprite_key = f'walk_{self.player.current_sprite_index}_{direction}'
@@ -1164,7 +1159,7 @@ class Game:
             
             img_surface = self.player_sprites[sprite_key]
             
-            # Calcular posição (ajustar para centralizar o sprite)
+            # Calcular posição
             pos_x = int(self.player.x - img_surface.get_width() // 2)
             pos_y = int(self.player.y - img_surface.get_height() // 2)
             
@@ -1181,7 +1176,7 @@ class Game:
                     else:
                         raise AttributeError("Não foi possível acessar o surface")
             except:
-                # Fallback: usar screen.blit com string (sem flip)
+                # Fallback: usar screen.blit com string
                 sprite_name = self.player.images_walk[self.player.current_sprite_index] if self.player.is_moving else self.player.images_idle[0]
                 screen.blit(f"images/{sprite_name}.png", (pos_x, pos_y))
         except Exception as e:
