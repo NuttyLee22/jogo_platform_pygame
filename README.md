@@ -1,4 +1,4 @@
-# Adventure Platformer - PgZero
+# Adventure Platformer - Elden Thing
 
 Um jogo de plataforma completo desenvolvido em Python usando a biblioteca Pygame Zero.
 
@@ -7,10 +7,34 @@ Um jogo de plataforma completo desenvolvido em Python usando a biblioteca Pygame
 - Python 3.7+
 - Pygame Zero (`pip install pgzero`)
 
-## 🚀 Como Executar
+## 📦 Instalação e Ambiente Virtual
+
+Para evitar conflitos de dependências, recomenda-se utilizar um ambiente virtual.
+
+### 1 Criar o ambiente virtual
+
+**Windows:**
+```bash
+python -m venv .venv
+.venv\Scripts\activate
+```
+
+**Linux/MacOS:**
+```bash
+python -m venv .venv
+source .venv/bin/activate
+```
+
+### 2 Instalar dependências
+```bash
+pip install pygame pygame-zero
+```
+
+## 3 Executar jogo 🚀
 
 ```bash
 cd jogo_roguelike_pygame
+set PYTHONUTF8=1
 pgzrun main.py
 ```
 
@@ -18,6 +42,11 @@ Ou alternativamente:
 ```bash
 python -m pgzrun main.py
 ```
+
+<!-- Ou clique no arquivo executavel dentro da pasta dist:
+```bash
+main.exe
+``` -->
 
 ## 🎮 Controles
 
@@ -62,4 +91,3 @@ O jogo usa animações procedurais para os personagens:
 - **Herói**: Animação de pernas ao andar e respiração quando parado
 - **Inimigos**: Animação de pernas durante a patrulha
 - Os olhos acompanham a direção do movimento
-

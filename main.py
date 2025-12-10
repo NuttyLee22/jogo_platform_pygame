@@ -1,9 +1,15 @@
 # -*- coding: utf-8 -*-
+import sys
 import math
 import random
 import pygame
 import os
 from pgzero.rect import Rect
+
+def resource_path(relative_path):
+    if hasattr(sys, '_MEIPASS'):
+        return os.path.join(sys._MEIPASS, relative_path)
+    return os.path.join(relative_path)
 
 # Centralizar janela na primeira execucao
 os.environ['SDL_VIDEO_CENTERED'] = '1'
@@ -522,11 +528,11 @@ class Game:
                 return pygame.transform.scale(img, (new_width, new_height))
             
             # Carregar sprites do jogador (direita e esquerda) - apenas attack_02
-            idle_r = scale_sprite(pygame.image.load("images/hero_paused.png").convert_alpha())
-            walk0_r = scale_sprite(pygame.image.load("images/hero_walk_01.png").convert_alpha())
-            walk1_r = scale_sprite(pygame.image.load("images/hero_walk_02.png").convert_alpha())
-            attack1_r = scale_sprite(pygame.image.load("images/hero_attack_02.png").convert_alpha())
-            
+            idle_r = scale_sprite(pygame.image.load(resource_path("images/hero_paused.png")).convert_alpha())
+            walk0_r = scale_sprite(pygame.image.load(resource_path("images/hero_walk_01.png")).convert_alpha())
+            walk1_r = scale_sprite(pygame.image.load(resource_path("images/hero_walk_02.png")).convert_alpha())
+            attack1_r = scale_sprite(pygame.image.load(resource_path("images/hero_attack_02.png")).convert_alpha())
+
             self.player_sprites = {
                 'idle_r': idle_r,
                 'idle_l': pygame.transform.flip(idle_r, True, False),
@@ -539,9 +545,9 @@ class Game:
             }
             
             # Carregar sprites dos inimigos (direita e esquerda)
-            enemy_walk0_r = scale_sprite(pygame.image.load("images/enemy_walk_01.png").convert_alpha())
-            enemy_walk1_r = scale_sprite(pygame.image.load("images/enemy_walk_02.png").convert_alpha())
-            
+            enemy_walk0_r = scale_sprite(pygame.image.load(resource_path("images/enemy_walk_01.png")).convert_alpha())
+            enemy_walk1_r = scale_sprite(pygame.image.load(resource_path("images/enemy_walk_02.png")).convert_alpha())
+
             self.enemy_sprites = {
                 'walk_0_r': enemy_walk0_r,
                 'walk_0_l': pygame.transform.flip(enemy_walk0_r, True, False),
@@ -1372,6 +1378,10 @@ class Game:
             color=(200, 200, 200)
         )
 
+def resource_path(relative_path):
+    if hasattr(sys, '_MEIPASS'):
+        return os.path.join(sys._MEIPASS, relative_path)
+    return os.path.join(relative_path)
 
 # Instancia global do jogo
 game = Game()
